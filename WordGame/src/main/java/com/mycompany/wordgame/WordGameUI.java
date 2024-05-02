@@ -6,9 +6,8 @@ package com.mycompany.wordgame;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,10 +20,28 @@ public class WordGameUI extends javax.swing.JFrame {
      * Creates new form WordGameUI
      */
     private BinarySearchTree bst;
+    private File currentDirectory;
 
     public WordGameUI() {
         initComponents();
         bst = new BinarySearchTree();
+        selectInitialDirectory();
+    }
+
+    private void selectInitialDirectory() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  // Allow files and directories to be chosen
+        fileChooser.setDialogTitle("Select a directory or file for processing");
+        fileChooser.setCurrentDirectory(new java.io.File("."));  // Set current directory to the application directory
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            currentDirectory = fileChooser.getSelectedFile();
+            JOptionPane.showMessageDialog(this, "Selected Path: " + currentDirectory.getPath());
+        } else {
+            JOptionPane.showMessageDialog(this, "No Path Selected, application will close.");
+            System.exit(1);  // Close the application if no path is selected
+        }
     }
 
     /**
@@ -36,12 +53,12 @@ public class WordGameUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFileChooser2 = new javax.swing.JFileChooser();
+        choice1 = new java.awt.Choice();
         jFileChooser1 = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         jComboBoxTraversel = new javax.swing.JComboBox<>();
-        ShowWordsBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         SearchBtn = new javax.swing.JButton();
@@ -74,15 +91,6 @@ public class WordGameUI extends javax.swing.JFrame {
             }
         });
 
-        ShowWordsBtn.setText("Show Words ");
-        ShowWordsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ShowWordsBtnActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Click the Button to see words in selected files");
-
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -104,27 +112,25 @@ public class WordGameUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(SearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(29, 29, 29)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(SearchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ShowWordsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jFileChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(60, 60, 60)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(93, 93, 93)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jComboBoxTraversel, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,16 +141,13 @@ public class WordGameUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ShowWordsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SearchBtn))
-                .addGap(54, 54, 54))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(SearchBtn)
+                .addGap(85, 85, 85))
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jComboBoxTraversel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +161,61 @@ public class WordGameUI extends javax.swing.JFrame {
 
     private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
         // TODO add your handling code here:
-        System.out.println("open");
+        if ("ApproveSelection".equals(evt.getActionCommand())) {
+            jFileChooser1.setCurrentDirectory(currentDirectory);
+            MyLinkedList<File> selectedFiles = new MyLinkedList<>();
+
+            for (File file : jFileChooser1.getSelectedFiles()) {
+                selectedFiles.addLast(file);
+            }
+
+            if (selectedFiles.getSize() > 0) {
+                bst = new BinarySearchTree();
+
+                // Load stop words from the ignore list using MyLinkedList
+                MyLinkedList<String> stopWords = new MyLinkedList<>();
+                File ignoreList = new File(jFileChooser1.getCurrentDirectory(), "ignoreList.txt");
+                try (java.util.Scanner ignoreScanner = new java.util.Scanner(ignoreList)) {
+                    while (ignoreScanner.hasNextLine()) {
+                        stopWords.addLast(ignoreScanner.nextLine().trim().toLowerCase());
+                    }
+                } catch (FileNotFoundException e) {
+                    JOptionPane.showMessageDialog(this, "Ignore list file not found", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;  // Stop further execution if the stop words file is not found
+                }
+
+                try {
+                    for (File file : selectedFiles) {
+                        String content = new String(java.nio.file.Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+
+                        // Remove all tags except for words; you can customize this regex to better fit your document structure
+                        String text = content.replaceAll("<[^>]+>", " ");
+
+                        // Split the cleaned text into words based on spaces
+                        String[] words = text.split("\\s+");  // Splits the text into words by whitespace
+
+                        for (String word : words) {
+                            String cleanWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase();  // Clean non-alphabetic characters
+                            if (!cleanWord.isEmpty() && !stopWords.contains(cleanWord)) {
+                                bst.insertOrUpdate(cleanWord, file.getName());
+                            }
+                        }
+                    }
+
+                    MyLinkedList wordsList = bst.collectWordsInOrder();
+                    jList1.setListData((String[]) wordsList.toArray());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error reading files", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No file selected", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if ("CancelSelection".equals(evt.getActionCommand())) {
+            // Clear the JList if the file chooser is closed without selecting files
+            jList1.setListData(new String[0]);
+        }
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     private void jComboBoxTraverselActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTraverselActionPerformed
@@ -192,61 +249,6 @@ public class WordGameUI extends javax.swing.JFrame {
         jList1.setListData((String[]) wordsList.toArray());
 
     }//GEN-LAST:event_jComboBoxTraverselActionPerformed
-
-    private void ShowWordsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowWordsBtnActionPerformed
-        // TODO add your handling code here:
-        File[] selectedFiles = jFileChooser1.getSelectedFiles();
-
-        if (selectedFiles != null && selectedFiles.length > 0) {
-            bst = new BinarySearchTree();
-
-            // Load stop words from the ignore list
-            Set<String> stopWords = new HashSet<>();
-            File ignoreList = new File(jFileChooser1.getCurrentDirectory(), "ignoreList.txt");
-            try (java.util.Scanner ignoreScanner = new java.util.Scanner(ignoreList)) {
-                while (ignoreScanner.hasNextLine()) {
-                    stopWords.add(ignoreScanner.nextLine().trim().toLowerCase());
-                }
-            } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(this, "Ignore list file not found", "Error", JOptionPane.ERROR_MESSAGE);
-                return;  // Stop further execution if the stop words file is not found
-            }
-
-            try {
-                // Iterate over each file
-                for (File file : selectedFiles) {
-                    // Use Jsoup to parse the file
-                    org.jsoup.nodes.Document document = org.jsoup.Jsoup.parse(file, "UTF-8");
-
-                    // Remove <title> elements
-                    document.select("title").remove();
-
-                    // Extract text which discards all HTML tags
-                    String text = document.text();
-
-                    // Process the extracted text
-                    try (java.util.Scanner scanner = new java.util.Scanner(text)) {
-                        while (scanner.hasNext()) {
-                            String word = scanner.next().replaceAll("[^a-zA-Z]", "").toLowerCase();
-                            if (!word.isEmpty() && !stopWords.contains(word)) {
-                                bst.insertOrUpdate(word, file.getName());
-                            }
-                        }
-                    }
-                }
-
-                MyLinkedList wordsList = bst.collectWordsInOrder();
-                jList1.setListData((String[]) wordsList.toArray());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error reading files", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No file selected", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }//GEN-LAST:event_ShowWordsBtnActionPerformed
 
     private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
         // TODO add your handling code here:
@@ -311,10 +313,10 @@ public class WordGameUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton SearchBtn;
-    private javax.swing.JButton ShowWordsBtn;
+    private java.awt.Choice choice1;
     private javax.swing.JComboBox<String> jComboBoxTraversel;
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -51,9 +51,11 @@ class BinarySearchTree {
     private void inorderRec(BSTNode root, MyLinkedList<String> words) {
         if (root != null) {
             inorderRec(root.left, words);
+            int totalFrequency = 0;
             for (FileCount fc : root.fileCounts) {
-                words.addLast(root.word + " in " + fc.fileName + ", frequency=" + fc.count);
+                totalFrequency += fc.count;
             }
+            words.addLast(root.word + ", total frequency=" + totalFrequency);
             inorderRec(root.right, words);
         }
     }
@@ -66,9 +68,13 @@ class BinarySearchTree {
 
     private void preorderRec(BSTNode root, MyLinkedList<String> words) {
         if (root != null) {
+            // Calculate total frequency by manually summing up counts
+            int totalFrequency = 0;
             for (FileCount fc : root.fileCounts) {
-                words.addLast(root.word + " in " + fc.fileName + ", frequency=" + fc.count);
+                totalFrequency += fc.count;
             }
+            words.addLast(root.word + ", total frequency=" + totalFrequency);
+
             preorderRec(root.left, words);
             preorderRec(root.right, words);
         }
@@ -84,9 +90,13 @@ class BinarySearchTree {
         if (root != null) {
             postorderRec(root.left, words);
             postorderRec(root.right, words);
+
+            // Calculate total frequency by manually summing up counts
+            int totalFrequency = 0;
             for (FileCount fc : root.fileCounts) {
-                words.addLast(root.word + " in " + fc.fileName + ", frequency=" + fc.count);
+                totalFrequency += fc.count;
             }
+            words.addLast(root.word + ", total frequency=" + totalFrequency);
         }
     }
 
