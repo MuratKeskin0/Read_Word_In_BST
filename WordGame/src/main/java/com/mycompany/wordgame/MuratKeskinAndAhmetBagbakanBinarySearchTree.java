@@ -10,11 +10,11 @@ import java.util.NoSuchElementException;
  *
  * @author murat
  */
-class BinarySearchTree {
+class MuratKeskinAndAhmetBagbakanBinarySearchTree {
 
-    public BSTNode root;
+    public MuratKeskinAndAhmetBagbakanBSTNode root;
 
-    public BinarySearchTree() {
+    public MuratKeskinAndAhmetBagbakanBinarySearchTree() {
         root = null;
     }
 
@@ -24,12 +24,12 @@ class BinarySearchTree {
         return isNewInsert;
     }
 
-    private BSTNode insertOrUpdate(BSTNode node, String word, String fileName, boolean isNewInsert) {
+    private MuratKeskinAndAhmetBagbakanBSTNode insertOrUpdate(MuratKeskinAndAhmetBagbakanBSTNode node, String word, String fileName, boolean isNewInsert) {
         if (node == null) {
-            MyLinkedList<FileCount> list = new MyLinkedList<>();
-            list.addLast(new FileCount(fileName, 1));
+            MuratKeskinAndAhmetBagbakanMyLinkedList<MuratKeskinAndAhmetBagbakanFileCount> list = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
+            list.addLast(new MuratKeskinAndAhmetBagbakanFileCount(fileName, 1));
             isNewInsert = true;
-            return new BSTNode(word, list);
+            return new MuratKeskinAndAhmetBagbakanBSTNode(word, list);
         } else if (node.word.equals(word)) {
             node.addOrUpdateFile(fileName);
             isNewInsert = false;
@@ -42,17 +42,17 @@ class BinarySearchTree {
         return node;
     }
 
-    public MyLinkedList<String> collectWordsInOrder() {
-        MyLinkedList<String> words = new MyLinkedList<>();
+    public MuratKeskinAndAhmetBagbakanMyLinkedList<String> collectWordsInOrder() {
+        MuratKeskinAndAhmetBagbakanMyLinkedList<String> words = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
         inorderRec(root, words);
         return words;
     }
 
-    private void inorderRec(BSTNode root, MyLinkedList<String> words) {
+    private void inorderRec(MuratKeskinAndAhmetBagbakanBSTNode root, MuratKeskinAndAhmetBagbakanMyLinkedList<String> words) {
         if (root != null) {
             inorderRec(root.left, words);
             int totalFrequency = 0;
-            for (FileCount fc : root.fileCounts) {
+            for (MuratKeskinAndAhmetBagbakanFileCount fc : root.fileCounts) {
                 totalFrequency += fc.count;
             }
             words.addLast(root.word + ", total frequency=" + totalFrequency);
@@ -60,17 +60,17 @@ class BinarySearchTree {
         }
     }
 
-    public MyLinkedList<String> collectWordsPreOrder() {
-        MyLinkedList<String> words = new MyLinkedList<>();
+    public MuratKeskinAndAhmetBagbakanMyLinkedList<String> collectWordsPreOrder() {
+        MuratKeskinAndAhmetBagbakanMyLinkedList<String> words = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
         preorderRec(root, words);
         return words;
     }
 
-    private void preorderRec(BSTNode root, MyLinkedList<String> words) {
+    private void preorderRec(MuratKeskinAndAhmetBagbakanBSTNode root, MuratKeskinAndAhmetBagbakanMyLinkedList<String> words) {
         if (root != null) {
             // Calculate total frequency by manually summing up counts
             int totalFrequency = 0;
-            for (FileCount fc : root.fileCounts) {
+            for (MuratKeskinAndAhmetBagbakanFileCount fc : root.fileCounts) {
                 totalFrequency += fc.count;
             }
             words.addLast(root.word + ", total frequency=" + totalFrequency);
@@ -80,20 +80,20 @@ class BinarySearchTree {
         }
     }
 
-    public MyLinkedList<String> collectWordsPostOrder() {
-        MyLinkedList<String> words = new MyLinkedList<>();
+    public MuratKeskinAndAhmetBagbakanMyLinkedList<String> collectWordsPostOrder() {
+        MuratKeskinAndAhmetBagbakanMyLinkedList<String> words = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
         postorderRec(root, words);
         return words;
     }
 
-    private void postorderRec(BSTNode root, MyLinkedList<String> words) {
+    private void postorderRec(MuratKeskinAndAhmetBagbakanBSTNode root, MuratKeskinAndAhmetBagbakanMyLinkedList<String> words) {
         if (root != null) {
             postorderRec(root.left, words);
             postorderRec(root.right, words);
 
             // Calculate total frequency by manually summing up counts
             int totalFrequency = 0;
-            for (FileCount fc : root.fileCounts) {
+            for (MuratKeskinAndAhmetBagbakanFileCount fc : root.fileCounts) {
                 totalFrequency += fc.count;
             }
             words.addLast(root.word + ", total frequency=" + totalFrequency);
@@ -104,19 +104,19 @@ class BinarySearchTree {
         return root == null;
     }
 
-    public MyLinkedList<String> searchFilesContainingWord(String searchWord) {
+    public MuratKeskinAndAhmetBagbakanMyLinkedList<String> searchFilesContainingWord(String searchWord) {
         return searchRec(root, searchWord.toLowerCase());
     }
 
-    private MyLinkedList<String> searchRec(BSTNode root, String searchWord) {
+    private MuratKeskinAndAhmetBagbakanMyLinkedList<String> searchRec(MuratKeskinAndAhmetBagbakanBSTNode root, String searchWord) {
         if (root == null) {
 
             throw new NoSuchElementException("Word not found in any files.");
         }
         if (searchWord.equals(root.word)) {
 
-            MyLinkedList<String> fileDetails = new MyLinkedList<>();
-            for (FileCount fc : root.fileCounts) {
+            MuratKeskinAndAhmetBagbakanMyLinkedList<String> fileDetails = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
+            for (MuratKeskinAndAhmetBagbakanFileCount fc : root.fileCounts) {
                 fileDetails.addLast(fc.fileName + " (frequency=" + fc.count + ")");
             }
             return fileDetails;

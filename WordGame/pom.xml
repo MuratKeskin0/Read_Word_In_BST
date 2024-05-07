@@ -19,4 +19,5 @@
         <!-- Add this dependency for Jsoup -->
         
     </dependencies>
+    <name>MuratKeskinAndAhmetBagbakanWordGame</name>
 </project>

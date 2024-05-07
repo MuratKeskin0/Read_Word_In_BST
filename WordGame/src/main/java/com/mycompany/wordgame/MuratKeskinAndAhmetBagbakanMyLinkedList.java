@@ -7,18 +7,18 @@ import java.util.NoSuchElementException;
 /**
  * Generic LinkedList class that handles data of any type.
  */
-public class MyLinkedList<T> implements Iterable<T> {
+public class MuratKeskinAndAhmetBagbakanMyLinkedList<T> implements Iterable<T> {
 
-    private LinkedListNode<T> head; // Head node of the list
+    private MuratKeskinAndAhmetBagbakanLinkedListNode<T> head; // Head node of the list
     private int size = 0;  // Size of the list
 
     // Adds a new node with the specified data at the end of the list
     public void addLast(T data) {
-        LinkedListNode<T> newNode = new LinkedListNode<>(data);
+        MuratKeskinAndAhmetBagbakanLinkedListNode<T> newNode = new MuratKeskinAndAhmetBagbakanLinkedListNode<>(data);
         if (head == null) {
             head = newNode;
         } else {
-            LinkedListNode<T> temp = head;
+            MuratKeskinAndAhmetBagbakanLinkedListNode<T> temp = head;
             while (temp.next != null) {
                 temp = temp.next;
             }
@@ -35,7 +35,7 @@ public class MyLinkedList<T> implements Iterable<T> {
     //for adding tree into Jlist
     public String[] toArray() {
         ArrayList<String> list = new ArrayList<>();
-        LinkedListNode<T> temp = head;
+        MuratKeskinAndAhmetBagbakanLinkedListNode<T> temp = head;
         while (temp != null) {
             list.add(temp.data.toString());
             temp = temp.next;
@@ -46,7 +46,7 @@ public class MyLinkedList<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private LinkedListNode<T> current = head;
+            private MuratKeskinAndAhmetBagbakanLinkedListNode<T> current = head;
 
             @Override
             public boolean hasNext() {
@@ -66,7 +66,7 @@ public class MyLinkedList<T> implements Iterable<T> {
     }
 
     public boolean contains(T data) {
-        LinkedListNode<T> temp = head;
+        MuratKeskinAndAhmetBagbakanLinkedListNode<T> temp = head;
         while (temp != null) {
             if (temp.data.equals(data)) {
                 return true;

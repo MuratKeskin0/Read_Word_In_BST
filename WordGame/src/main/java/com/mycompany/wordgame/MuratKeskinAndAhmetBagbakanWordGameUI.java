@@ -14,25 +14,35 @@ import javax.swing.JOptionPane;
  *
  * @author murat
  */
-public class WordGameUI extends javax.swing.JFrame {
+public class MuratKeskinAndAhmetBagbakanWordGameUI extends javax.swing.JFrame {
 
     /**
      * Creates new form WordGameUI
      */
-    private BinarySearchTree bst;
+    private MuratKeskinAndAhmetBagbakanBinarySearchTree bst;
     private File currentDirectory;
+    private File ignoreListFile;
 
-    public WordGameUI() {
+    public MuratKeskinAndAhmetBagbakanWordGameUI() {
         initComponents();
-        bst = new BinarySearchTree();
+        bst = new MuratKeskinAndAhmetBagbakanBinarySearchTree();
+        initialSetup();
+    }
+
+    private void initialSetup() {
+        JOptionPane.showMessageDialog(this, "PLEASE CHOOSE THE DIRECTORY OF YOUR HTML FILES ( DON'T CHOOSE DIRECTORY OF JUST ONE HTML FILE )");
         selectInitialDirectory();
+        if (currentDirectory != null) {
+            JOptionPane.showMessageDialog(this, "Choose your ignore List :");
+            selectIgnoreList();
+        }
     }
 
     private void selectInitialDirectory() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);  // Allow files and directories to be chosen
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChooser.setDialogTitle("Select a directory or file for processing");
-        fileChooser.setCurrentDirectory(new java.io.File("."));  // Set current directory to the application directory
+        fileChooser.setCurrentDirectory(new java.io.File("."));
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -40,7 +50,23 @@ public class WordGameUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selected Path: " + currentDirectory.getPath());
         } else {
             JOptionPane.showMessageDialog(this, "No Path Selected, application will close.");
-            System.exit(1);  // Close the application if no path is selected
+            System.exit(1);
+        }
+    }
+
+    private void selectIgnoreList() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Select Ignore List File");
+        fileChooser.setCurrentDirectory(new java.io.File(".")); // Optionally start in the same directory
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            ignoreListFile = fileChooser.getSelectedFile();
+            JOptionPane.showMessageDialog(this, "Ignore List Selected: " + ignoreListFile.getPath());
+        } else {
+            JOptionPane.showMessageDialog(this, "No Ignore List Selected, application will use default settings.");
+            // Optional: Set a default ignore list or handle as needed
         }
     }
 
@@ -163,46 +189,42 @@ public class WordGameUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if ("ApproveSelection".equals(evt.getActionCommand())) {
             jFileChooser1.setCurrentDirectory(currentDirectory);
-            MyLinkedList<File> selectedFiles = new MyLinkedList<>();
+            MuratKeskinAndAhmetBagbakanMyLinkedList<File> selectedFiles = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
 
             for (File file : jFileChooser1.getSelectedFiles()) {
                 selectedFiles.addLast(file);
             }
 
             if (selectedFiles.getSize() > 0) {
-                bst = new BinarySearchTree();
+                bst = new MuratKeskinAndAhmetBagbakanBinarySearchTree();
 
-                // Load stop words from the ignore list using MyLinkedList
-                MyLinkedList<String> stopWords = new MyLinkedList<>();
-                File ignoreList = new File(jFileChooser1.getCurrentDirectory(), "ignoreList.txt");
-                try (java.util.Scanner ignoreScanner = new java.util.Scanner(ignoreList)) {
+                MuratKeskinAndAhmetBagbakanMyLinkedList<String> stopWords = new MuratKeskinAndAhmetBagbakanMyLinkedList<>();
+                try (java.util.Scanner ignoreScanner = new java.util.Scanner(ignoreListFile)) {
                     while (ignoreScanner.hasNextLine()) {
                         stopWords.addLast(ignoreScanner.nextLine().trim().toLowerCase());
                     }
                 } catch (FileNotFoundException e) {
                     JOptionPane.showMessageDialog(this, "Ignore list file not found", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;  // Stop further execution if the stop words file is not found
+                    return;
                 }
 
                 try {
                     for (File file : selectedFiles) {
                         String content = new String(java.nio.file.Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
 
-                        // Remove all tags except for words; you can customize this regex to better fit your document structure
                         String text = content.replaceAll("<[^>]+>", " ");
 
-                        // Split the cleaned text into words based on spaces
-                        String[] words = text.split("\\s+");  // Splits the text into words by whitespace
+                        String[] words = text.split("\\s+");
 
                         for (String word : words) {
-                            String cleanWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase();  // Clean non-alphabetic characters
+                            String cleanWord = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
                             if (!cleanWord.isEmpty() && !stopWords.contains(cleanWord)) {
                                 bst.insertOrUpdate(cleanWord, file.getName());
                             }
                         }
                     }
 
-                    MyLinkedList wordsList = bst.collectWordsInOrder();
+                    MuratKeskinAndAhmetBagbakanMyLinkedList<String> wordsList = bst.collectWordsInOrder();
                     jList1.setListData((String[]) wordsList.toArray());
 
                 } catch (Exception e) {
@@ -225,11 +247,9 @@ public class WordGameUI extends javax.swing.JFrame {
             return;
         }
 
-        // Get the selected item from the combo box
         String selectedOrder = (String) jComboBoxTraversel.getSelectedItem();
 
-        // Depending on the selection, perform different traversals
-        MyLinkedList wordsList = new MyLinkedList();
+        MuratKeskinAndAhmetBagbakanMyLinkedList wordsList = new MuratKeskinAndAhmetBagbakanMyLinkedList();
         switch (selectedOrder) {
             case "LNR (In-Order)":
                 wordsList = bst.collectWordsInOrder();
@@ -245,7 +265,6 @@ public class WordGameUI extends javax.swing.JFrame {
                 return;
         }
 
-        // Update the JList with the results from the selected traversal
         jList1.setListData((String[]) wordsList.toArray());
 
     }//GEN-LAST:event_jComboBoxTraverselActionPerformed
@@ -263,9 +282,9 @@ public class WordGameUI extends javax.swing.JFrame {
         }
 
         try {
-            MyLinkedList<String> filesContainingWord = bst.searchFilesContainingWord(searchWord);
+            MuratKeskinAndAhmetBagbakanMyLinkedList<String> filesContainingWord = bst.searchFilesContainingWord(searchWord);
             String[] data = filesContainingWord.toArray(); // Convert MyLinkedList to array
-            jList1.setListData(data); // Set data to JList
+            jList1.setListData(data);
         } catch (NoSuchElementException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Info", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -293,20 +312,21 @@ public class WordGameUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(WordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MuratKeskinAndAhmetBagbakanWordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(WordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MuratKeskinAndAhmetBagbakanWordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(WordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MuratKeskinAndAhmetBagbakanWordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MuratKeskinAndAhmetBagbakanWordGameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WordGameUI().setVisible(true);
+                new MuratKeskinAndAhmetBagbakanWordGameUI().setVisible(true);
             }
         });
     }

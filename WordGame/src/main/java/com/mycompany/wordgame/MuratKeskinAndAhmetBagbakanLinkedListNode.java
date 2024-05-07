@@ -8,14 +8,15 @@ package com.mycompany.wordgame;
  *
  * @author murat
  */
+public class MuratKeskinAndAhmetBagbakanLinkedListNode<T> {
+    T data; 
+    MuratKeskinAndAhmetBagbakanLinkedListNode<T> next; 
 
-    public class FileCount {
-     public String fileName;
-     public int count;
-
-     public FileCount(String fileName, int count) {
-        this.fileName = fileName;
-        this.count = count;
+    
+    public MuratKeskinAndAhmetBagbakanLinkedListNode(T data) {
+        this.data = data;
+        this.next = null;
     }
 }
+
 
